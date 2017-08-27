@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">AndroidLogin</string>
+    <string name="tv_user">Usuario:</string>
+    <string name="tv_pass">Password:</string>
+    <string name="btn_verify">Verificar</string>
+    <string name="title_activity_new_user">NewUserActivity</string>
+</resources>
