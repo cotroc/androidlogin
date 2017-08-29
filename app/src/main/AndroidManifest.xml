@@ -18,10 +18,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".NewUserActivity"
-            android:label="@string/title_activity_new_user"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".LogedActivity" />
+        <activity android:name=".CreateUserActivity"></activity>
     </application>
 
 </manifest>

@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity implements SimpleUpdatableAc
 
     private AsyncRestClient asyncRestClient;
     private static final String TAG = "PrincipalActivity";
-    private final String urlServer = "http://192.168.0.123:8080/login.service/api/ws";
+    private final String urlServer = "http://192.168.0.127:8080/login.service/api/ws";
     private TextView status;
     private EditText et_name;
     private EditText et_pwd;
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements SimpleUpdatableAc
 
     public void newUser(View v) {
         Log.i(TAG, "Creating User");
-        Intent intent = new Intent(this, NewUserActivity.class);
+        Intent intent = new Intent(this, CreateUserActivity.class);
         startActivity(intent);
 
     }
@@ -95,6 +95,9 @@ public class MainActivity extends AppCompatActivity implements SimpleUpdatableAc
                 status.setText("Usuario incorrecto o no existe");
             }else{
                 status.setText("Bienvenido " + userDto.getName());
+                Intent intent = new Intent(this, LogedActivity.class);
+                intent.putExtra("logedUser", verifiedUser);
+                startActivity(intent);
                 //userPage : change password
             }
 
