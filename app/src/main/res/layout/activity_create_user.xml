@@ -1,67 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingTop="@dimen/fab_marginX2"
+    android:paddingRight="@dimen/fab_margin"
+    android:paddingLeft="@dimen/fab_margin"
+    android:paddingBottom="@dimen/fab_margin"
+    android:background="@color/colorBackground"
     android:orientation="vertical"
-    tools:context="com.cotroc.androidlogin.MainActivity">
+    tools:context="com.cotroc.androidlogin.CreateUserActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:text="Usuario" />
 
             <EditText
                 android:id="@+id/et_user"
-                android:layout_width="120dp"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:text="Password" />
-
-            <EditText
-                android:id="@+id/et_pass"
-                android:layout_width="120dp"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/btn_verify"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:onClick="createUser"
-                android:text="Aceptar" />
+                android:hint="user name" />
+
+            <Button
+                android:id="@+id/btn_exist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ver"
+                android:onClick="existUserName"/>
 
         </LinearLayout>
+
+        <EditText
+            android:id="@+id/et_pass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="password"
+            android:inputType="textPassword" />
+
+        <EditText
+            android:id="@+id/et_confirm_pass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="confirm password"
+            android:inputType="textPassword" />
+
+        <EditText
+            android:id="@+id/et_mail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="e-mail"
+            android:inputType="textEmailAddress" />
+
+        <Button
+            android:id="@+id/btn_aceptar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="createUser"
+            android:text="Aceptar" />
 
     </LinearLayout>
 
@@ -71,6 +77,19 @@
         android:orientation="vertical"
         android:gravity="">
 
+        <EditText
+            android:id="@+id/et_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="code from e-mail" />
+
+        <Button
+            android:id="@+id/btn_send_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="checkActivationCode"
+            android:text="Enviar codigo" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -78,9 +97,9 @@
             android:text="Ultimo estado"/>
 
         <TextView
+            android:id="@+id/status"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/status"/>
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

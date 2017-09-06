@@ -12,6 +12,7 @@ public class LogedActivity extends AppCompatActivity {
 
     TextView lbl_Welcome;
     TextView lbl_logedUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

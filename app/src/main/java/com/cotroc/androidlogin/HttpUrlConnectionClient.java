@@ -42,17 +42,8 @@ public class HttpUrlConnectionClient {
         }
         return list;
     }
-    /*Ejemplo de llamada:
-    JSONObject jsonObject=new JSONObject();
-        try {
-            jsonObject.put("id","15");
-            jsonObject.put("nombre","Marc");
-            jsonObject.put("email","marc@test.com");
-            jsonObject.put("edad","47");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        httpUrlConnectionClient.sendPost("http://192.168.1.46:8080/persona/",jsonObject.toString());*/
+
+    //httpUrlConnectionClient.sendPost("http://192.168.1.46:8080/persona/",jsonObject.toString());
     public String sendPost(String urlServer, String args) {
         StringBuffer result = new StringBuffer();
         String inputLine;
@@ -61,26 +52,17 @@ public class HttpUrlConnectionClient {
             URL url = new URL(urlServer);
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setDoOutput(true);
-            //httpURLConnection.setRequestMethod(POST);
             httpURLConnection.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
             httpURLConnection.setRequestProperty("Accept", "application/json; charset=UTF-8");
-            //httpURLConnection.setRequestProperty("charset", "utf-8");
-
-            //OutputStreamWriter out = new OutputStreamWriter(httpURLConnection.getOutputStream());
-            //out.write(args);
-            //out.close();
             OutputStream out = httpURLConnection.getOutputStream();
             out.write(bytes);
-            Object object = httpURLConnection;
-            int responseCode = httpURLConnection.getResponseCode();
+            out.close();
 
             BufferedReader in = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
             while (null!=(inputLine = in.readLine())) {
                 result.append(inputLine);
             }
             in.close();
-
-
         } catch (IOException e) {
             e.printStackTrace();
             //add message error file not fuound, no server.

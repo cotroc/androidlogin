@@ -18,8 +18,9 @@ public class MainActivity extends AppCompatActivity implements SimpleUpdatableAc
 
     private AsyncRestClient asyncRestClient;
     private static final String TAG = "PrincipalActivity";
-    private final String urlServer = "http://192.168.0.127:8080/login.service/api/ws";
+    private final String urlServer = "http://192.168.0.103:8080/login.service/api/ws";
     private TextView status;
+    private TextView serverStatus;
     private EditText et_name;
     private EditText et_pwd;
 
@@ -28,8 +29,6 @@ public class MainActivity extends AppCompatActivity implements SimpleUpdatableAc
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initComponents();
-
-
     }
 
     public void getAllUser(View v) {
@@ -38,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements SimpleUpdatableAc
         asyncRestClient.execute("listUser", urlServer);
     }
 
-    public void newUser(View v) {
+    public void createUser(View v) {
         Log.i(TAG, "Creating User");
         Intent intent = new Intent(this, CreateUserActivity.class);
         startActivity(intent);
@@ -48,17 +47,20 @@ public class MainActivity extends AppCompatActivity implements SimpleUpdatableAc
     public void verifyUser(View v) {
         asyncRestClient = new AsyncRestClient(this);
         UserDto userDto = new UserDto();
-        userDto.setId(1);
         userDto.setName(et_name.getText().toString());
         userDto.setPwd(et_pwd.getText().toString());
+        String resu = userDto.toString();
         asyncRestClient.execute("verifyUser", urlServer + "/verify", userDto.toString());
     }
 
     private void initComponents() {
         status = (TextView) findViewById(R.id.status);
+        serverStatus = (TextView) findViewById(R.id.serverStatus);
         et_name = (EditText) findViewById(R.id.et_user);
         et_pwd = (EditText) findViewById(R.id.et_pass);
         status.setText("Esperando");
+        asyncRestClient = new AsyncRestClient(this);
+        asyncRestClient.execute("serverStatus", urlServer + "/status");
     }
 
     @Override
@@ -71,6 +73,8 @@ public class MainActivity extends AppCompatActivity implements SimpleUpdatableAc
             case "verifyUser":
                 updateVerifyUser(results.get(1));
                 break;
+            case "serverStatus":
+                serverStatus.setText(results.get(1));
             default: break;
         }
     }
@@ -86,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements SimpleUpdatableAc
 
     private void updateVerifyUser(String verifiedUser) {
         try {
+            String resu = verifiedUser;
             JSONObject jsonObject = new JSONObject(verifiedUser);//verifiedUser
             UserDto userDto = new UserDto();
             userDto.setId(jsonObject.getInt("id"));

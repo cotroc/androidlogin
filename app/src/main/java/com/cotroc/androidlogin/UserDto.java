@@ -9,6 +9,8 @@ public class UserDto {
     private int id;
     private String name;
     private String pwd;
+    private String mail;
+    private boolean active;
 
     public int getId() {
         return id;
@@ -34,6 +36,22 @@ public class UserDto {
         this.pwd = pwd;
     }
 
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
     public UserDto() {
 
     }
@@ -46,6 +64,8 @@ public class UserDto {
     public String toString() {
         return "{\"id\":\""+ id +"\"," +
                 "\"name\":\""+name+"\"," +
-                "\"pwd\":\""+pwd+"\"}";
+                "\"pwd\":\""+pwd+"\"," +
+                "\"mail\":\""+mail+"\"," +
+                "\"active\":\""+active+"\"}";
     }
 }

@@ -1,9 +1,5 @@
 package com.cotroc.androidlogin;
 
-/**
- * Created by Cotroc on 22/08/2017.
- */
-
 import android.os.AsyncTask;
 import java.util.ArrayList;
 
@@ -22,17 +18,35 @@ public class AsyncRestClient extends AsyncTask<String, Void, ArrayList<String>> 
         switch(flag) {
 
             case "listUser":
-                String listUser = getAllUsers(data[1]);
+                String listUser = getRequest(data[1]);
                 result.add(0, flag);
                 result.add(1, listUser);
                 break;
             case "verifyUser":
-                String userVerified = verifyUser(data[1], data[2]);
+                String userVerified = postRequest(data[1], data[2]);
                 result.add(0, flag);
                 result.add(1, userVerified);
                 break;
+            case "existUserName":
+                String userExist = postRequest(data[1], data[2]);
+                result.add(0, flag);
+                result.add(1, userExist);
+                break;
             case "createUser":
-
+                String createUser = postRequest(data[1], data[2]);
+                result.add(0, flag);
+                result.add(1, createUser);
+                break;
+            case "serverStatus":
+                String serverStatus = getRequest(data[1]);
+                result.add(0, flag);
+                result.add(1, serverStatus);
+                break;
+            case "userActivation":
+                String userActivation = getRequest(data[1]);
+                result.add(0, flag);
+                result.add(1, userActivation);
+                break;
             default: break;
         }
         return result;
@@ -45,18 +59,17 @@ public class AsyncRestClient extends AsyncTask<String, Void, ArrayList<String>> 
         }
     }
 
-    protected String getAllUsers(String url) {
+    protected String getRequest(String url) {
         String list;
             HttpUrlConnectionClient httpUrlConnectionClient = new HttpUrlConnectionClient();
         list = httpUrlConnectionClient.sendGet(url);
         return list;
     }
 
-    protected String verifyUser(String... params) {
+    protected String postRequest(String... params) {
         String result;
             HttpUrlConnectionClient httpUrlConnectionClient = new HttpUrlConnectionClient();
         result = httpUrlConnectionClient.sendPost(params[0], params[1]);
         return result;
     }
-
  }
