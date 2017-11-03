@@ -1,12 +1,15 @@
 package com.cotroc.androidlogin;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,7 +21,9 @@ public class MainActivity extends AppCompatActivity implements SimpleUpdatableAc
 
     private AsyncRestClient asyncRestClient;
     private static final String TAG = "PrincipalActivity";
-    private final String urlServer = "http://192.168.0.103:8080/login.service/api/ws";
+    private final String urlServer = "http://192.168.0.111:8080/login.service/ws";
+    private ProgressDialog pDialog;
+
     private TextView status;
     private TextView serverStatus;
     private EditText et_name;
@@ -29,6 +34,18 @@ public class MainActivity extends AppCompatActivity implements SimpleUpdatableAc
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initComponents();
+    }
+
+    @Override
+    public void progress(String message) {
+        pDialog = new ProgressDialog(this);
+        pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        pDialog.setTitle("Procesando");
+        pDialog.setMessage(message);
+        pDialog.setCancelable(true);
+        pDialog.show();
+
+        ProgressBar progressBar = new ProgressBar(this, null, android.R.attr.progressBarStyleSmall);
     }
 
     public void getAllUser(View v) {
@@ -66,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements SimpleUpdatableAc
     @Override
     public void update(ArrayList<String> results) {
        String flag = results.get(0);
+       pDialog.dismiss();
         switch(flag) {
             case "listUser":
                 updateListUser(results.get(1));
@@ -92,22 +110,40 @@ public class MainActivity extends AppCompatActivity implements SimpleUpdatableAc
         try {
             String resu = verifiedUser;
             JSONObject jsonObject = new JSONObject(verifiedUser);//verifiedUser
-            UserDto userDto = new UserDto();
-            userDto.setId(jsonObject.getInt("id"));
-            userDto.setName(jsonObject.getString("name"));
-            userDto.setPwd(jsonObject.getString("pwd"));
+            UserDto userDto = this.jsonToUserObject(verifiedUser);
             if(userDto.getName().equals("null")) {
                 status.setText("Usuario incorrecto o no existe");
             }else{
-                status.setText("Bienvenido " + userDto.getName());
-                Intent intent = new Intent(this, LogedActivity.class);
-                intent.putExtra("logedUser", verifiedUser);
-                startActivity(intent);
-                //userPage : change password
+                if(userDto.isActive()){
+                    status.setText("Bienvenido " + userDto.getName());
+                    Intent intent = new Intent(this, LogedActivity.class);
+                    intent.putExtra("logedUser", verifiedUser);
+                    startActivity(intent);
+                    //userPage : change password
+                }else{
+                    this.showToast("Activar usuario primero");
+                }
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private UserDto jsonToUserObject(String userJson) throws JSONException {
+        JSONObject jsonObject = new JSONObject(userJson);//verifiedUser
+        UserDto userDto = new UserDto();
+        userDto.setId(jsonObject.getInt("id"));
+        userDto.setName(jsonObject.getString("name"));
+        userDto.setPwd(jsonObject.getString("pwd"));
+        userDto.setMail(jsonObject.getString("mail"));
+        userDto.setActive(jsonObject.getBoolean("active"));
+        return userDto;
+    }
+
+    private void showToast(String message) {
+        int duration = Toast.LENGTH_SHORT;
+        Toast toast = Toast.makeText(this, message, duration);
+        toast.show();
     }
 }

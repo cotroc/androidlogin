@@ -3,7 +3,7 @@ package com.cotroc.androidlogin;
 import android.os.AsyncTask;
 import java.util.ArrayList;
 
-public class AsyncRestClient extends AsyncTask<String, Void, ArrayList<String>> {
+public class AsyncRestClient extends AsyncTask<String, String, ArrayList<String>> {
     private SimpleUpdatableActivity simpleUpdatableActivity;
     private static final String TAG = "AsyncRestClient";
 
@@ -15,8 +15,8 @@ public class AsyncRestClient extends AsyncTask<String, Void, ArrayList<String>> 
     protected ArrayList<String> doInBackground(String... data) {
         String flag = data[0];
         ArrayList<String> result = new ArrayList<>();
+        publishProgress("Consultando Servidor");
         switch(flag) {
-
             case "listUser":
                 String listUser = getRequest(data[1]);
                 result.add(0, flag);
@@ -57,6 +57,11 @@ public class AsyncRestClient extends AsyncTask<String, Void, ArrayList<String>> 
         if (null != result) {
             this.simpleUpdatableActivity.update(result);
         }
+    }
+
+    @Override
+    protected void onProgressUpdate(String... value){
+        simpleUpdatableActivity.progress(value[0]);
     }
 
     protected String getRequest(String url) {

@@ -1,5 +1,6 @@
 package com.cotroc.androidlogin;
 
+import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -17,7 +18,8 @@ public class CreateUserActivity extends AppCompatActivity implements SimpleUpdat
 
     private AsyncRestClient asyncRestClient;
     private static final String TAG = "NewUserActivity";
-    private final String urlServer = "http://192.168.0.103:8080/login.service/api/ws";
+    private final String urlServer = "http://192.168.0.111:8080/login.service/ws";
+    private ProgressDialog pDialog;
     private String activationCode = null;
     private JSONObject createdUser = null;
     EditText user, pass, confirmPass, mail, et_code;
@@ -32,6 +34,17 @@ public class CreateUserActivity extends AppCompatActivity implements SimpleUpdat
         setContentView(R.layout.activity_create_user);
         initComponents();
         btn_aceptar.setEnabled(false);
+    }
+
+    @Override
+    public void progress(String message) {
+        pDialog = new ProgressDialog(this);
+        pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        pDialog.setTitle("Procesando");
+        pDialog.setMessage(message);
+        pDialog.setCancelable(true);
+        pDialog.setMax(100);
+        pDialog.show();
     }
 
     public void initComponents(){
@@ -80,6 +93,7 @@ public class CreateUserActivity extends AppCompatActivity implements SimpleUpdat
     @Override
     public void update(ArrayList<String> results) {
         String flag = results.get(0);
+        pDialog.dismiss();
         switch(flag) {
             case "existUserName":
                 if(results.get(1).equals("true")) {

@@ -27,7 +27,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="user name" />
+                android:hint="user name"
+                android:inputType="textNoSuggestions" />
 
         </LinearLayout>
 

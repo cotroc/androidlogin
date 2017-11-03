@@ -7,5 +7,6 @@ import java.util.ArrayList;
  */
 
 public interface SimpleUpdatableActivity {
-    public void update(ArrayList<String> results);
+    void update(ArrayList<String> results);
+    void progress(String message);
 }
